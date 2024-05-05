@@ -38,9 +38,20 @@ const RegisterForm = () => {
             position: "top-right",
             autoClose: 2000,
           });
+
+          setName("")
+          setLastName("")
+          setEmail("")
+          setPassword("")
+
           setTimeout(() => {
             router.push("login");
           }, 2000);
+        }else if(response.data.code == "auth/email-already-in-use"){
+          toast.info("El Correo la esta registrado", {
+            position: "top-right",
+            autoClose: 2000,
+          });
         }
       })
       .catch((error) => {
