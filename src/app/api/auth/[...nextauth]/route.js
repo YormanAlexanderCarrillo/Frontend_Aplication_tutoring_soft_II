@@ -13,7 +13,7 @@ const handler = NextAuth({
       async authorize(credentials, req) {
         try {
           const response = await axios.post(
-            $ {process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login,
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`,
             {
               email: credentials?.email,
               password: credentials?.password,
@@ -39,7 +39,7 @@ const handler = NextAuth({
       return { ...token, ...user };
     },
     async session({ session, token }) {
-      session.user = token as any;
+      session.user = token;
       return session;
     },
   },
