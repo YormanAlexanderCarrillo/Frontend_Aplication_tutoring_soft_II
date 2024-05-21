@@ -3,7 +3,7 @@ import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
 import Providers from "@/providers";
 import NavBar from "@/components/NavBar";
-import SessionAuthProvider from "./context/SessionAuthProvider";
+import SessionAuthProvider from "@/context/SessionAuthProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
