@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { TextField, Button } from "@mui/material";
+import { Button, CircularProgress, TextField } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
 import { ToastContainer, toast } from "react-toastify";
@@ -76,6 +76,7 @@ function LoginForm() {
                         <div className="flex justify-end pt-5">
                             <Button className="w-28" variant="contained" color="warning" type="submit">
                                 Ingresar
+                                <CircularProgress/>
                             </Button>
                         </div>
                     </div>
