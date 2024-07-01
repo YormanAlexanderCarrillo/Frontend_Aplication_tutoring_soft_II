@@ -10,6 +10,7 @@ const RegisterForm = () => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false)
   const router = useRouter();
 
   const handleRegister = async (event) => {
@@ -28,11 +29,12 @@ const RegisterForm = () => {
       });
       return;
     }
-
+    
+    setIsLoading(true)
     await axios
       .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/register`, user)
       .then((response) => {
-        console.log(response);
+        //console.log(response);
         if (response.data.status === 200) {
           toast.success("Registro exitoso 😃", {
             position: "top-right",
@@ -47,15 +49,20 @@ const RegisterForm = () => {
           setTimeout(() => {
             router.push("login");
           }, 2000);
+
+          setIsLoading(false)
         }else if(response.data.code == "auth/email-already-in-use"){
+          setIsLoading(false)
           toast.info("El Correo la esta registrado", {
             position: "top-right",
             autoClose: 2000,
           });
+          
         }
       })
       .catch((error) => {
-        console.log(error);
+       // console.log(error);
+        setIsLoading(false)
         toast.error("Ocurrio un error en el registro 😢", {
           position: "top-right",
           autoClose: 3000,
@@ -126,6 +133,7 @@ const RegisterForm = () => {
                 variant="solid"
                 color="warning"
                 type="submit"
+                isLoading={isLoading}
               >
                 Registrarse
               </Button>

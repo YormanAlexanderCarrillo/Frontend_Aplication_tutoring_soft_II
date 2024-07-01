@@ -4,7 +4,6 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "moment/locale/es";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { useMediaQuery } from "react-responsive";
 import { useDisclosure } from "@nextui-org/react";
 import ModalTutoring from "./ModalTutoring";
 import axios from "axios";
@@ -46,8 +45,8 @@ function CalendarEvents() {
   };
 
   const openModal = async (day) => {
-    console.log(day);
-    console.log(session.user.token);
+    //console.log(day);
+    //console.log(session.user.token);
     setSelectedDay(day.start)
     axios
       .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/get-tutors`, {

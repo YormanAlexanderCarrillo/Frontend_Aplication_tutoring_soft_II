@@ -75,7 +75,7 @@ function NavBar() {
       ) : (
 
         <nav className="bg-zinc-800/85 ">
-          <div className="flex items-center justify-center space-x-10 h-16">
+          <div className="flex items-center justify-center space-x-10 h-12">
             <Link
               href="/"
               className="w-32 h-7 hover:bg-slate-200/20 text-white rounded-md flex justify-center items-center"

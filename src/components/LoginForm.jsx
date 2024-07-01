@@ -1,14 +1,16 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Button, CircularProgress, TextField } from "@mui/material";
+import {  TextField } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
 import { ToastContainer, toast } from "react-toastify";
+import { Button } from "@nextui-org/react";
 
 function LoginForm() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [isLoading, setIsLoading]= useState(false)
     const router = useRouter();
     const { data: session, status } = useSession();
 
@@ -20,6 +22,7 @@ function LoginForm() {
 
     
     const handleSubmit = async (event) => {
+        setIsLoading(true)
         event.preventDefault();
         const responseNextAuth = await signIn("credentials", {
             email,
@@ -28,14 +31,20 @@ function LoginForm() {
         });
 
         if (responseNextAuth?.error) {
-            console.error(responseNextAuth.error);
+            //console.error(responseNextAuth.error);
             toast.error(responseNextAuth.error, {
                 position: 'top-right',
                 autoClose: 2000
             })
+            setIsLoading(false)
             return;
         }
+        setIsLoading(false)
         router.push("/dashboard");
+    };
+
+    const register = () => {
+        router.push("/register");
     };
 
     if (status === "loading") {
@@ -74,9 +83,8 @@ function LoginForm() {
                             onChange={(event) => setPassword(event.target.value)}
                         />
                         <div className="flex justify-end pt-5">
-                            <Button className="w-28" variant="contained" color="warning" type="submit">
+                            <Button className="w-28 flex space-x-2 justify-center " variant="solid" color="warning" type="submit" isLoading={isLoading}>
                                 Ingresar
-                                <CircularProgress/>
                             </Button>
                         </div>
                     </div>
@@ -85,7 +93,7 @@ function LoginForm() {
                     <a className="text-white text-xs sm:text-base" href="">
                         ¿Olvidó su contraseña?
                     </a>
-                    <Button href="/register" className="w-32 sm:w-28" variant="contained" color="info">
+                    <Button onClick={register} className="w-32 sm:w-28" variant="solid" color="primary">
                         Registrarse
                     </Button>
                 </div>
