@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "moment/locale/es";
@@ -10,58 +10,56 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { ToastContainer } from "react-toastify";
 
-function CalendarEvents() {
+function CalendarEvents({ session, tutorings, reloadTutoring }) {
   moment.locale("es");
-  const { data: session, status } = useSession();
-   const localizer = momentLocalizer(moment);
-   const [date, setDate] = useState(new Date());
+  const localizer = momentLocalizer(moment);
+  const [date, setDate] = useState(new Date());
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [selectedDay, setSelectedDay] = useState();
-  const [ dataTutors, setDataTutors ] = useState([]);
+  const [dataTutors, setDataTutors] = useState([]);
 
-  const styleEvent = (event) => {
-    var backgroundColor = "#EAC107";
-    var style = {
-      backgroundColor: backgroundColor,
+  const fetchTutors = useCallback(async () => {
+    try {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/get-tutors`, {
+        headers: { Authorization: `Bearer ${session.user.token}` },
+      });
+      setDataTutors(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [session.user.token]);
+
+  useEffect(() => {
+    if (isOpen) {
+      fetchTutors();
+    }
+  }, [isOpen, fetchTutors]);
+
+  useEffect(() => {
+    reloadTutoring();
+  }, [onOpenChange]);
+
+  const styleEvent = (event) => ({
+    style: {
+      backgroundColor: "#EAC107",
       borderRadius: "10px",
       color: "black",
       border: "0px",
       display: "block",
-    };
-    return {
-      style: style,
-    };
-  };
-
-  const events = [
-    {
-      title: "Tutoria",
-      start: new Date(2024, 6, 2, 10, 0, 0),
-      end: new Date(2024, 6, 2, 11, 0, 0),
     },
-  ];
+  });
 
-  const changeDate = (date) => {
-    setDate(date);
-  };
+  const events = tutorings.map((tutoring) => ({
+    title: tutoring.name,
+    start: new Date(tutoring.date),
+    end: new Date(new Date(tutoring.date).getTime() + 60 * 60 * 1000),
+  }));
 
-  const openModal = async (day) => {
-    setSelectedDay(day.start)
-    axios
-      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/get-tutors`, {
-        headers: {
-          Authorization: `Bearer ${session.user.token}`,
-        },
-      })
-      .then((response) => {
-        console.log(response);
-        const data = response.data;
-        setDataTutors(data);
-        onOpen();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const changeDate = (date) => setDate(date);
+
+  const openModal = (day) => {
+    setSelectedDay(day.start);
+    onOpen();
   };
 
   return (
@@ -69,17 +67,13 @@ function CalendarEvents() {
       <Calendar
         localizer={localizer}
         events={events}
-        selectable={true}
+        selectable
         views={["month"]}
         date={date}
-        messages={{
-          next: "Siguiente",
-          previous: "Anterior",
-          today: "Hoy",
-        }}
+        messages={{ next: "Siguiente", previous: "Anterior", today: "Hoy" }}
         onNavigate={changeDate}
         eventPropGetter={styleEvent}
-        onSelectSlot={(day) => openModal(day)}
+        onSelectSlot={openModal}
       />
       <ModalTutoring
         isOpen={isOpen}
@@ -87,11 +81,11 @@ function CalendarEvents() {
         onOpenChange={onOpenChange}
         dataTutors={dataTutors}
         selectedDay={selectedDay}
-        session = {session} 
+        session={session}
       />
       <ToastContainer />
     </div>
   );
 }
 
-export default CalendarEvents
+export default CalendarEvents;
