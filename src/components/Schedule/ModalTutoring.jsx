@@ -15,6 +15,7 @@ import {
 } from "@nextui-org/react";
 import { Time } from "@internationalized/date";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 function ModalTutoring({
   isOpen,
@@ -30,6 +31,8 @@ function ModalTutoring({
   const [reason, setReason] = useState("");
   const [date, setDate] = useState(Date);
   const [hour, setHour] = useState(new Time(11, 10));
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleTutorSelect = (tutor) => {
     setSelectedTutor(tutor);
@@ -48,21 +51,45 @@ function ModalTutoring({
       reason: reason,
       date: date,
       hour: hour.toString(),
+      status: true,
     };
-    await axios.post(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/tutoring/create-tutoring/${selectedSubject._id}/${selectedTutor._id}/${session.user.userData._id}`,
-      tutoring,
-      {
-        headers: {
-          Authorization: `Bearer ${session.user.token}`,
-        },
-      }
-    ).then((response)=>{
-      console.log(response);
-    }).catch((error)=>{
-      console.log(error);
-    });
-    console.log(tutoring);
+    setIsLoading(true);
+    await axios
+      .post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/tutoring/create-tutoring/${selectedSubject._id}/${selectedTutor._id}/${session?.user.userData._id}`,
+        tutoring,
+        {
+          headers: {
+            Authorization: `Bearer ${session?.user.token}`,
+          },
+        }
+      )
+      .then((response) => {
+        setIsLoading(false);
+        onOpenChange(false);
+        setName("");
+        setReason("");
+        setHour(new Time(11, 10));
+        setSelectedTutor(null);
+        setSelecteSubject(null);
+        toast.success("Agendamiento realizado correctamente", {
+          position: "top-right",
+          autoClose: 2000,
+        });
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        console.log(error);
+      });
+  };
+
+  const handleCloseModal = () => {
+    setName("");
+    setReason("");
+    setHour(new Time(11, 10));
+    setSelectedTutor(null);
+    setSelecteSubject(null);
+    onOpenChange(false);
   };
 
   return (
@@ -71,7 +98,7 @@ function ModalTutoring({
         backdrop="blur"
         isOpen={isOpen}
         placement={"center"}
-        onOpenChange={onOpenChange}
+        onOpenChange={handleCloseModal}
       >
         <ModalContent>
           {(onClose) => (
@@ -134,7 +161,9 @@ function ModalTutoring({
                         <Dropdown>
                           <DropdownTrigger>
                             <Button size="lg" variant="solid">
-                              Materia
+                              {selectedSubject
+                                ? selectedSubject.name
+                                : "Seleccione Materia"}
                             </Button>
                           </DropdownTrigger>
                           <DropdownMenu
@@ -169,6 +198,7 @@ function ModalTutoring({
                         variant="solid"
                         color="warning"
                         type="submit"
+                        isLoading={isLoading}
                       >
                         Agendar
                       </Button>
