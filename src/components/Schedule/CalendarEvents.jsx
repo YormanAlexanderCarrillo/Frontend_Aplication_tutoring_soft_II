@@ -36,8 +36,8 @@ function CalendarEvents() {
   const events = [
     {
       title: "Tutoria",
-      start: new Date(2024, 11, 2, 10, 0, 0),
-      end: new Date(2024, 11, 2, 12, 0, 0),
+      start: new Date(2024, 6, 2, 10, 0, 0),
+      end: new Date(2024, 6, 2, 11, 0, 0),
     },
   ];
 
