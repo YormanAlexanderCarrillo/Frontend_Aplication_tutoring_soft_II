@@ -1,31 +1,30 @@
-'use client'
-import CalendarEvents from '@/components/CalendarEvents'
-import CardInfo from '@/components/CardInfo'
-import React from 'react'
+"use client";
+import CalendarEvents from "@/components/Schedule/CalendarEvents";
+import CardInfo from "@/components/Schedule/CardInfo";
+import React from "react";
 
 function SchedulePage() {
   return (
-    <div className="mt-16">
-    <div className="flex justify-center items-center bg-yellow-500">
-      <h2>Agendamiento tutoria</h2>
-    </div>
-    <div className="flex flex-col sm:flex-row 2xl:mt-24">
-      <div className="flex justify-center items-center pt-7 pl-5 sm:pt-0 sm:w-1/2 sm:mt-0 ">
-        <CalendarEvents />
+    <div className="h-screen overflow-hidden">
+      <div className="flex justify-center items-center bg-yellow-500 mt-16">
+        <h2>Agendamiento tutoría</h2>
       </div>
-      <div className="flex justify-center sm:w-1/2 ">
-        <div className="block w-full "> 
-          <div className="mb-2 w-full ">
-            <CardInfo/>
-            <CardInfo/>
-            <CardInfo/>
+      <div className="flex flex-col pt-10 sm:flex-row 2xl:mt-4 h-full">
+        <div className="flex justify-center pl-5 sm:pt-0 sm:w-1/2 sm:mt-0 h-full">
+          <CalendarEvents />
+        </div>
+        <div className="flex justify-center sm:w-1/2 overflow-hidden">
+          <div className="block w-full h-full overflow-y-scroll pb-28 space-y-4">
+              <CardInfo />
+              <CardInfo />
+              <CardInfo />
+              <CardInfo />
+              <CardInfo />
           </div>
         </div>
       </div>
     </div>
-  </div>
-
-  )
+  );
 }
 
-export default SchedulePage
+export default SchedulePage;

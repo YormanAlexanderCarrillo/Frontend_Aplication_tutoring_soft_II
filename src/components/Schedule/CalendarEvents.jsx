@@ -8,6 +8,7 @@ import { useDisclosure } from "@nextui-org/react";
 import ModalTutoring from "./ModalTutoring";
 import axios from "axios";
 import { useSession } from "next-auth/react";
+import { ToastContainer } from "react-toastify";
 
 function CalendarEvents() {
   moment.locale("es");
@@ -35,8 +36,8 @@ function CalendarEvents() {
   const events = [
     {
       title: "Tutoria",
-      start: new Date(2024, 3, 15, 10, 0, 0),
-      end: new Date(2024, 3, 15, 12, 0, 0),
+      start: new Date(2024, 11, 2, 10, 0, 0),
+      end: new Date(2024, 11, 2, 12, 0, 0),
     },
   ];
 
@@ -45,8 +46,6 @@ function CalendarEvents() {
   };
 
   const openModal = async (day) => {
-    //console.log(day);
-    //console.log(session.user.token);
     setSelectedDay(day.start)
     axios
       .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/get-tutors`, {
@@ -66,7 +65,7 @@ function CalendarEvents() {
   };
 
   return (
-    <div className="w-10/12 h-80 sm:w-5/6 sm:h-3/4">
+    <div className="w-10/12 sm:w-5/6 sm:h-3/4">
       <Calendar
         localizer={localizer}
         events={events}
@@ -90,6 +89,7 @@ function CalendarEvents() {
         selectedDay={selectedDay}
         session = {session} 
       />
+      <ToastContainer />
     </div>
   );
 }
