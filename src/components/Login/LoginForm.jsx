@@ -5,7 +5,7 @@ import {  TextField } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
 import { ToastContainer, toast } from "react-toastify";
-import { Button } from "@nextui-org/react";
+import { Button, CircularProgress } from "@nextui-org/react";
 
 function LoginForm() {
     const [email, setEmail] = useState("");
@@ -48,8 +48,12 @@ function LoginForm() {
     };
 
     if (status === "loading") {
-        return <p>Loading...</p>;
-    }
+        return (
+          <div className="flex justify-center items-center h-screen">
+            <CircularProgress color="warning" aria-label="Loading..." />
+          </div>
+        );
+      }
 
     return (
         <div className="flex justify-center items-center min-h-screen">

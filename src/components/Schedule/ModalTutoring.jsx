@@ -29,7 +29,6 @@ function ModalTutoring({
   const [selectedSubject, setSelecteSubject] = useState(null);
   const [name, setName] = useState("");
   const [reason, setReason] = useState("");
-  const [date, setDate] = useState(Date);
   const [hour, setHour] = useState(new Time(11, 10));
 
   const [isLoading, setIsLoading] = useState(false);
@@ -45,14 +44,14 @@ function ModalTutoring({
 
   const handleRegisterTutoring = async (event) => {
     event.preventDefault();
-    setDate(selectedDay);
     const tutoring = {
       name: name,
       reason: reason,
-      date: date,
+      date: selectedDay,
       hour: hour.toString(),
       status: true,
     };
+    console.log(tutoring);
     setIsLoading(true);
     await axios
       .post(
