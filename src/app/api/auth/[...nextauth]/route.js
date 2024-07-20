@@ -20,9 +20,9 @@ const handler = NextAuth({
             }
           );
 
-          console.log("data", response.data);
+          //console.log("data", response.data);
 
-          if (response.data) {
+          if (response.data.userData.role === "STUDENT") {
             return response.data;
           } else {
             return null;
