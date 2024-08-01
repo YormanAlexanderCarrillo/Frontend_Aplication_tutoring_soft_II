@@ -67,15 +67,20 @@ function SupportPage() {
     );
   }
   return (
-    <div className="flex flex-col items-center pt-20 h-screen ">
-      <div className="w-4/5 ">
-        <SelectSubject
-          subjects={subjects}
-          onSelectChange={handleSelectdChange}
-        />
+    <div className="h-screen overflow-hidden">
+      <div className="flex justify-center items-center bg-yellow-500 mt-16">
+        <h2>Material de apoyo</h2>
       </div>
-      <div className="w-4/5 mt-5">
-        <TableSupport files={files} />
+      <div className="flex flex-col items-center pt-5 h-screen ">
+        <div className="w-4/5 ">
+          <SelectSubject
+            subjects={subjects}
+            onSelectChange={handleSelectdChange}
+          />
+        </div>
+        <div className="w-4/5 mt-5">
+          <TableSupport files={files} />
+        </div>
       </div>
     </div>
   );
