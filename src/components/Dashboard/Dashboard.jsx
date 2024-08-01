@@ -87,7 +87,7 @@ const Dashboard = () => {
       {
         label: "Cantidad de tutorías por Mes",
         data: values,
-        backgroundColor: "rgba(239, 253, 17 , 0.6)",
+        backgroundColor: "rgba(238, 181, 1, 0.8)",
         borderColor: "rgba(0, 0, 0, 1)",
         borderWidth: 2,
       },
@@ -100,7 +100,7 @@ const Dashboard = () => {
       {
         label: "Tutorías Activas e Inactivas",
         data: activeInactiveData.values,
-        backgroundColor: [ "rgba(239, 253, 17, 0.5)", "rgba(0, 0, 0, 0.7)"],
+        backgroundColor: [ "rgba(238, 181, 1, 0.8)", "rgba(0, 0, 0, 0.7)"],
         borderColor: [ "rgba(255, 255, 0, 1)", "rgba(0, 0, 0, 1)"],
         borderWidth: 2,
       },
