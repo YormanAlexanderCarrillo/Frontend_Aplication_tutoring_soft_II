@@ -46,19 +46,18 @@ export default function TableForum() {
   }, [searchTitle, forums]);
 
   const getForums = async () => {
-    axios
-      .get(`${URLAPI}/forum/get-forums`, {
+    try {
+      const response = await axios.get(`${URLAPI}/forum/get-forums`, {
         headers: {
           Authorization: `Bearer ${session.user.token}`,
         },
-      })
-      .then((response) => {
-        setForums(response.data.data);
-        setFilteredForums(response.data.data);
-      })
-      .catch((error) => {
-        console.log(error);
       });
+      const activeForums = response.data.data.filter(forum => forum.state === true);
+      setForums(activeForums);
+      setFilteredForums(activeForums);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const openEditModal = (forum) => {
