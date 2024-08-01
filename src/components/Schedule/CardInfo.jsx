@@ -3,7 +3,7 @@ import React from "react";
 import { Card, CardHeader, CardBody, Divider } from "@nextui-org/react";
 
 function CardInfo({ tutoring }) {
-  console.log(tutoring);
+  //console.log(tutoring);
   const formatDate = (dateTimeString) => {
     const date = new Date(dateTimeString);
     return date.toLocaleDateString();

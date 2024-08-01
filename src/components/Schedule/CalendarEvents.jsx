@@ -9,20 +9,26 @@ import ModalTutoring from "./ModalTutoring";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { ToastContainer } from "react-toastify";
+import ModalEditAndDelete from "./ModalEditAndDeleteTutoring";
 
 function CalendarEvents({ session, tutorings, reloadTutoring }) {
   moment.locale("es");
   const localizer = momentLocalizer(moment);
   const [date, setDate] = useState(new Date());
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [isOpenEditDelete, setIsOpenEditDelete] = useState(false);
+  const [selectedTutoring, setSelectedTutoring] = useState();
   const [selectedDay, setSelectedDay] = useState();
   const [dataTutors, setDataTutors] = useState([]);
 
   const fetchTutors = useCallback(async () => {
     try {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/get-tutors`, {
-        headers: { Authorization: `Bearer ${session.user.token}` },
-      });
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/get-tutors`,
+        {
+          headers: { Authorization: `Bearer ${session.user.token}` },
+        }
+      );
       setDataTutors(response.data);
     } catch (error) {
       console.error(error);
@@ -37,7 +43,7 @@ function CalendarEvents({ session, tutorings, reloadTutoring }) {
 
   useEffect(() => {
     reloadTutoring();
-  }, [onOpenChange]);
+  }, [onOpenChange, isOpenEditDelete]);
 
   const styleEvent = (event) => ({
     style: {
@@ -53,6 +59,7 @@ function CalendarEvents({ session, tutorings, reloadTutoring }) {
     title: tutoring.name,
     start: new Date(tutoring.date),
     end: new Date(new Date(tutoring.date).getTime() + 60 * 60 * 1000),
+    ...tutoring
   }));
 
   const changeDate = (date) => setDate(date);
@@ -60,6 +67,11 @@ function CalendarEvents({ session, tutorings, reloadTutoring }) {
   const openModal = (day) => {
     setSelectedDay(day.start);
     onOpen();
+  };
+
+  const handleSelectEvent = (tutoring) => {
+    setSelectedTutoring(tutoring);
+    setIsOpenEditDelete(!isOpenEditDelete);
   };
 
   return (
@@ -74,6 +86,7 @@ function CalendarEvents({ session, tutorings, reloadTutoring }) {
         onNavigate={changeDate}
         eventPropGetter={styleEvent}
         onSelectSlot={openModal}
+        onSelectEvent={handleSelectEvent}
       />
       <ModalTutoring
         isOpen={isOpen}
@@ -81,6 +94,12 @@ function CalendarEvents({ session, tutorings, reloadTutoring }) {
         onOpenChange={onOpenChange}
         dataTutors={dataTutors}
         selectedDay={selectedDay}
+        session={session}
+      />
+      <ModalEditAndDelete
+        isOpen={isOpenEditDelete}
+        onOpenChange={()=>setIsOpenEditDelete(false)}
+        tutoring={selectedTutoring}
         session={session}
       />
       <ToastContainer />
