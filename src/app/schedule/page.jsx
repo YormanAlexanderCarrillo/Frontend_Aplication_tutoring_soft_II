@@ -36,7 +36,7 @@ function SchedulePage() {
       );
       const data = response.data.data;
       setTutorings(data);
-      console.log(data);
+      //console.log(data);
     } catch (error) {
       console.error("Error fetching tutorings:", error);
     }
