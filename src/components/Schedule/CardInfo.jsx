@@ -3,6 +3,7 @@ import React from "react";
 import { Card, CardHeader, CardBody, Divider } from "@nextui-org/react";
 
 function CardInfo({ tutoring }) {
+  console.log(tutoring);
   const formatDate = (dateTimeString) => {
     const date = new Date(dateTimeString);
     return date.toLocaleDateString();
@@ -20,7 +21,7 @@ function CardInfo({ tutoring }) {
           <div className="flex flex-row justify-center space-x-10 pb-4">
             <div className="flex flex-col">
               <p>Fecha y hora</p>
-              <p>Duracion estimada</p>
+              <p>Estado</p>
               <p>Nombre tutor</p>
               <p>Materia</p>
             </div>
@@ -28,7 +29,7 @@ function CardInfo({ tutoring }) {
               <p>
                 {formatDate(tutoring.date)} - {tutoring.hour}
               </p>
-              <p>Duracion estimada</p>
+              <p>{tutoring.status ? "Activo" : "Inactivo"}</p>
               <p>{tutoring.tutor.name}</p>
               <p>{tutoring.subject.name}</p>
             </div>

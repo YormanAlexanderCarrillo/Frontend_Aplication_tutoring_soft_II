@@ -14,7 +14,7 @@ function NavBar() {
 
   const menuItems = [
 
-    { text: "Datos personales", link: "/dashboard" },
+    { text: "Dashboard", link: "/dashboard" },
     { text: "Agendar", link: "/schedule" },
     { text: "Material de apoyo", link: "/support" },
     { text: "Foros", link: "/forum" }
